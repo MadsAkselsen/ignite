@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import gamesReducer from './gamesReducer';
+import gameDetailReducer from './gameDetailReducer';
 
 const initState = {
     name: '',
@@ -16,6 +17,7 @@ const userReducer = (state = initState, action) => {
 const rootReducer = combineReducers({
     games: gamesReducer,
     user: userReducer,
+    gameDetails: gameDetailReducer,
 });
 
 export default rootReducer;
