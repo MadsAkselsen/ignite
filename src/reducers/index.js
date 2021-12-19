@@ -3,19 +3,19 @@ import gamesReducer from './gamesReducer';
 
 const initState = {
     name: '',
-    isLogged: false
-}
+    isLogged: false,
+};
 
 const userReducer = (state = initState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         default:
-            return {...state}
+            return { ...state };
     }
-}
+};
 
 const rootReducer = combineReducers({
     games: gamesReducer,
-    user: userReducer
-})
+    user: userReducer,
+});
 
 export default rootReducer;
