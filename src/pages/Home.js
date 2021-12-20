@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadGames } from '../actions/gamesAction';
 // components
 import Game from '../components/Game';
+import GameDetails from '../components/GameDetails.js';
 
 const Home = () => {
     //FETCH GAMES
@@ -22,6 +23,7 @@ const Home = () => {
 
     return (
         <GameList>
+            <GameDetails />
             <h2>Upcoming Games</h2>
             <Games>
                 {upcomingGames.map((game) => (
