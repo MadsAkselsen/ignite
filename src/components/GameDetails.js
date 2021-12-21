@@ -6,38 +6,68 @@ import { motion } from 'framer-motion';
 
 //redux
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { resizeImage } from '../utils';
 
 const GameDetails = () => {
-    const { gameDetails } = useSelector((state) => state.gameDetails);
+    const history = useHistory(); // use this to set the url of the url bar
+    console.log(history);
+    // exiting out of game details popup - add back the scroll bar
+    const exitDetailHandler = (e) => {
+        const element = e.target;
+        if (element.classList.contains('shadow')) {
+            //the shadow backdrop
+            document.body.style.overflow = 'auto';
+            history.push('/'); // going back to Home
+        }
+    };
+    const { gameDetails, isLoading } = useSelector(
+        (state) => state.gameDetails
+    );
     return (
-        <CardShadow>
-            <Detail>
-                <Stats>
-                    <div className="rating">
-                        <h3>{gameDetails.name}</h3>
-                        <p>Rating: {gameDetails.rating}</p>
-                    </div>
-                    <Info>
-                        <h3>Platforms</h3>
-                        <Platforms>
-                            {gameDetails.platforms.map((data) => (
-                                <h3 key={data.platform.id}>
-                                    {data.platform.name}
-                                </h3>
+        <CardShadow className="shadow" onClick={(e) => exitDetailHandler(e)}>
+            {!isLoading && (
+                <>
+                    <Detail>
+                        <Stats>
+                            <div className="rating">
+                                <h3>{gameDetails.name}</h3>
+                                <p>Rating: {gameDetails.rating}</p>
+                            </div>
+                            <Info>
+                                <h3>Platforms</h3>
+                                <Platforms>
+                                    {gameDetails.platforms.map((data) => (
+                                        <h3 key={data.platform.id}>
+                                            {data.platform.name}
+                                        </h3>
+                                    ))}
+                                </Platforms>
+                            </Info>
+                        </Stats>
+                        <Media>
+                            <img
+                                src={resizeImage(
+                                    gameDetails.background_image,
+                                    1280
+                                )}
+                                alt="background"
+                            />
+                        </Media>
+                        <Description>{gameDetails.description}</Description>
+                        <div className="gallery">
+                            {gameDetails.screenshots.map((screen) => (
+                                <img
+                                    src={resizeImage(screen.image, 1280)}
+                                    alt="gallery"
+                                    key={screen.id}
+                                />
                             ))}
-                        </Platforms>
-                    </Info>
-                </Stats>
-                <Media>
-                    <img src={gameDetails.background_image} alt="background" />
-                </Media>
-                <Description>{gameDetails.description}</Description>
-                <div className="gallery">
-                    {gameDetails.screenshots.map((screen) => (
-                        <img src={screen.image} alt="gallery" key={screen.id} />
-                    ))}
-                </div>
-            </Detail>
+                        </div>
+                    </Detail>
+                </>
+            )}
         </CardShadow>
     );
 };

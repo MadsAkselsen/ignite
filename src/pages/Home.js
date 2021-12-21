@@ -8,8 +8,12 @@ import { loadGames } from '../actions/gamesAction';
 // components
 import Game from '../components/Game';
 import GameDetails from '../components/GameDetails.js';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Home = () => {
+    // get the current location
+    const location = useLocation();
+    const pathID = location.pathname.split('/')[2]; //getting the id part of the pathname
     //FETCH GAMES
     const dispatch = useDispatch();
 
@@ -23,7 +27,7 @@ const Home = () => {
 
     return (
         <GameList>
-            <GameDetails />
+            {pathID && <GameDetails />}
             <h2>Upcoming Games</h2>
             <Games>
                 {upcomingGames.map((game) => (
