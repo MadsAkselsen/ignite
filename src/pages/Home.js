@@ -5,14 +5,13 @@ import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGames } from '../actions/gamesAction';
-import loadGameDetails from '../actions/detailAction';
 // components
 import Game from '../components/Game';
 import GameDetails from '../components/GameDetails.js';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Home = () => {
-    const { popularGames, newGames, upcomingGames } = useSelector(
+    const { popularGames, newGames, upcomingGames, searched } = useSelector(
         (state) => state.games
     );
 
@@ -34,6 +33,25 @@ const Home = () => {
                 <AnimatePresence>
                     {pathId && <GameDetails pathId={pathId} />}
                 </AnimatePresence>
+                {searched.length ? (
+                    <div className="searched">
+                        <h2>Searched Games</h2>
+                        <Games>
+                            {searched.map((game) => (
+                                <Game
+                                    name={game.name}
+                                    released={game.released}
+                                    key={game.id}
+                                    id={game.id}
+                                    image={game.background_image}
+                                    screenshots={game.short_screenshots}
+                                />
+                            ))}
+                        </Games>
+                    </div>
+                ) : (
+                    ''
+                )}
                 <h2>Upcoming Games</h2>
                 <Games>
                     {upcomingGames.map((game) => (

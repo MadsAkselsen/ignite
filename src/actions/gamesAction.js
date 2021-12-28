@@ -1,4 +1,9 @@
-import { getPopularGames, getUpcomingGames, getNewGames } from '../api';
+import {
+    getPopularGames,
+    getUpcomingGames,
+    getNewGames,
+    searchGame,
+} from '../api';
 
 // ACTION CREATOR
 export const loadGames = async (dispatch) => {
@@ -12,6 +17,17 @@ export const loadGames = async (dispatch) => {
             popularGames: popularGames.results,
             upcomingGames: upcomingGames.results,
             newGames: newGames.results,
+        },
+    });
+};
+
+export const fetchSearch = (searchInput) => async (dispatch) => {
+    // FETCH AXIOS
+    const searchGames = await searchGame(searchInput);
+    dispatch({
+        type: 'FETCH_SEARCHED',
+        payload: {
+            searched: searchGames.results,
         },
     });
 };

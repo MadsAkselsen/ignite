@@ -54,3 +54,14 @@ export const getGameDetails = async (id) => {
     const { data } = await rawgAxios.get(`/games/${id}`);
     return data;
 };
+
+export const searchGame = async (game_name) => {
+    console.log(game_name);
+    const { data } = await rawgAxios.get('/games', {
+        params: {
+            search: game_name,
+            page_size: 9,
+        },
+    });
+    return data;
+};
