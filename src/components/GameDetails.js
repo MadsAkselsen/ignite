@@ -9,10 +9,22 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { resizeImage } from '../utils';
+import playstation from '../img/playstation.svg';
+import apple from '../img/apple.svg';
+import gamepad from '../img/gamepad.svg';
+import logo from '../img/logo.svg';
+import nintendo from '../img/nintendo.svg';
+import starEmpty from '../img/star-empty.png';
+import starFull from '../img/star-full.png';
+import steam from '../img/steam.svg';
+import xbox from '../img/playstation.svg';
 
-const GameDetails = () => {
+const GameDetails = ({ pathId }) => {
+    const { gameDetails, isLoading } = useSelector(
+        (state) => state.gameDetails
+    );
     const history = useHistory(); // use this to set the url of the url bar
-    console.log(history);
+
     // exiting out of game details popup - add back the scroll bar
     const exitDetailHandler = (e) => {
         const element = e.target;
@@ -22,48 +34,92 @@ const GameDetails = () => {
             history.push('/'); // going back to Home
         }
     };
-    const { gameDetails, isLoading } = useSelector(
-        (state) => state.gameDetails
-    );
+
+    // get stars
+    const getStars = () => {
+        const stars = [];
+        const rating = Math.floor(gameDetails.rating);
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars.push(<img alt="star" key={i} src={starFull}></img>);
+            } else {
+                stars.push(<img alt="star" key={i} src={starEmpty}></img>);
+            }
+        }
+        return stars;
+    };
+
+    // get platform images
+    const getPlatform = (platform) => {
+        switch (platform) {
+            case 'PlayStation 4':
+                return playstation;
+            case 'PlayStation 5':
+                return playstation;
+            case 'Xbox Series S/X':
+                return xbox;
+            case 'Xbox S':
+                return xbox;
+            case 'Xbox One':
+                return xbox;
+            case 'PC':
+                return steam;
+            case 'Nintendo Switch':
+                return nintendo;
+            case 'iOS':
+                return apple;
+            default:
+                return gamepad;
+        }
+    };
+
     return (
         <CardShadow className="shadow" onClick={(e) => exitDetailHandler(e)}>
             {!isLoading && (
                 <>
-                    <Detail>
+                    <Detail layoutId={pathId}>
                         <Stats>
                             <div className="rating">
-                                <h3>{gameDetails.name}</h3>
+                                <motion.h3 layoutId={`title ${pathId}`}>
+                                    {gameDetails.name}
+                                </motion.h3>
                                 <p>Rating: {gameDetails.rating}</p>
+                                {getStars()}
                             </div>
                             <Info>
                                 <h3>Platforms</h3>
                                 <Platforms>
                                     {gameDetails.platforms.map((data) => (
-                                        <h3 key={data.platform.id}>
-                                            {data.platform.name}
-                                        </h3>
+                                        <img
+                                            key={data.platform.id}
+                                            src={getPlatform(
+                                                data.platform.name
+                                            )}
+                                        ></img>
                                     ))}
                                 </Platforms>
                             </Info>
                         </Stats>
                         <Media>
-                            <img
+                            <motion.img
                                 src={resizeImage(
                                     gameDetails.background_image,
                                     1280
                                 )}
+                                layoutId={`image ${pathId}`}
                                 alt="background"
                             />
                         </Media>
                         <Description>{gameDetails.description}</Description>
                         <div className="gallery">
-                            {gameDetails.screenshots.map((screen) => (
-                                <img
-                                    src={resizeImage(screen.image, 1280)}
-                                    alt="gallery"
-                                    key={screen.id}
-                                />
-                            ))}
+                            {gameDetails.screenshots &&
+                                gameDetails.screenshots.map((screen) => (
+                                    <img
+                                        src={resizeImage(screen.image, 1280)}
+                                        alt="gallery"
+                                        key={screen.id}
+                                    />
+                                ))}
                         </div>
                     </Detail>
                 </>

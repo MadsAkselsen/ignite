@@ -12,17 +12,23 @@ import { Link } from 'react-router-dom';
 import { resizeImage } from '../utils';
 
 const Game = ({ name, released, image, id, screenshots }) => {
+    const stringPathId = id.toString();
+
     const dispatch = useDispatch();
     const loadDetailHandler = () => {
         document.body.style.overflow = 'hidden'; // removes the scroll side bar from body, so we don't show two scroll bars
         dispatch(loadGameDetails(id, screenshots));
     };
     return (
-        <StyledGame onClick={loadDetailHandler}>
+        <StyledGame layoutId={stringPathId} onClick={loadDetailHandler}>
             <Link to={`/game/${id}`}>
-                <h3>{name}</h3>
+                <motion.h3 layoutId={`title ${stringPathId}`}>{name}</motion.h3>
                 <p>{released}</p>
-                <img src={resizeImage(image, 640)} alt={name} />
+                <motion.img
+                    layoutId={`image ${stringPathId}`}
+                    src={resizeImage(image, 640)}
+                    alt={name}
+                />
             </Link>
         </StyledGame>
     );
