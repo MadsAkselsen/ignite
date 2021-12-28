@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 // styling and animation
 import styled from 'styled-components';
 import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { fadeIn } from '../animations';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGames } from '../actions/gamesAction';
@@ -27,7 +28,7 @@ const Home = () => {
     }, [dispatch]); // reason for [dispatch] explained here at 5:22: https://developedbyed.com/courses/1203573/lectures/26900539
 
     return (
-        <GameList>
+        <GameList variants={fadeIn} initial="hidden" animate="show">
             <AnimateSharedLayout type="crossfade">
                 {/* AnimatePresence animates the components inside when it becomes visible*/}
                 <AnimatePresence>
